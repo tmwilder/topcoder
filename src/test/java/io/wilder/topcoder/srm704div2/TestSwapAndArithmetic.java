@@ -1,7 +1,6 @@
 package io.wilder.topcoder.srm704div2;
 
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
 
