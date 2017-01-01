@@ -11,6 +11,46 @@ public class TestSwapAndArithmetic {
 		SwapAndArithmetic swapAndArithmetic = new SwapAndArithmetic();
 		int[] test = {1, 2, 3};
 		String output = swapAndArithmetic.able(test);
-		assertEquals("Hello world!", output);
+		assertEquals(SwapAndArithmetic.POSSIBLE, output);
+	}
+
+	@Test
+	public void tcTest2(){
+		SwapAndArithmetic swapAndArithmetic = new SwapAndArithmetic();
+		int[] test = {2, 1, 5, 4, 3};
+		String output = swapAndArithmetic.able(test);
+		assertEquals(SwapAndArithmetic.POSSIBLE, output);
+	}
+
+	@Test
+	public void tcTest3(){
+		SwapAndArithmetic swapAndArithmetic = new SwapAndArithmetic();
+		int[] test = {3, 1, 2};
+		String output = swapAndArithmetic.able(test);
+		assertEquals(SwapAndArithmetic.POSSIBLE, output);
+	}
+
+	@Test
+	public void tcTest4(){
+		SwapAndArithmetic swapAndArithmetic = new SwapAndArithmetic();
+		int[] test = {1, 1, 1, 1, 1, 1};
+		String output = swapAndArithmetic.able(test);
+		assertEquals(SwapAndArithmetic.POSSIBLE, output);
+	}
+
+	@Test
+	public void tcTest5(){
+		SwapAndArithmetic swapAndArithmetic = new SwapAndArithmetic();
+		int[] test = {7, 3, 11, 5, 1, 9};
+		String output = swapAndArithmetic.able(test);
+		assertEquals(SwapAndArithmetic.POSSIBLE, output);
+	}
+
+	@Test
+	public void tcTest6(){
+		SwapAndArithmetic swapAndArithmetic = new SwapAndArithmetic();
+		int[] test = {1000, 704, 1};
+		String output = swapAndArithmetic.able(test);
+		assertEquals(SwapAndArithmetic.IMPOSSIBLE, output);
 	}
 }
