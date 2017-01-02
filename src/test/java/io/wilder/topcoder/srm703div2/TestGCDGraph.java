@@ -28,11 +28,11 @@ public class TestGCDGraph {
 		Assert.assertEquals(GCDGraph.IMPOSSIBLE, gcdGraph.possible(10, 2, 8, 9));
 	}
 
-//	@Test
-//	public void TestGCDGraph5(){
-//		GCDGraph gcdGraph = new GCDGraph();
-//		Assert.assertEquals(GCDGraph.POSSIBLE, gcdGraph.possible(1000000, 1000, 12345, 54321));
-//	}
+	@Test
+	public void TestGCDGraph5(){
+		GCDGraph gcdGraph = new GCDGraph();
+		Assert.assertEquals(GCDGraph.POSSIBLE, gcdGraph.possible(1000000, 1000, 12345, 54321));
+	}
 
 //	@Test
 //	public void TestGCDGraph6(){

@@ -1,22 +1,15 @@
 package io.wilder.topcoder.srm703div2;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class GCDGraph {
 	public static final String POSSIBLE = "Possible";
 	public static final String IMPOSSIBLE = "Impossible";
 
-	private Set<Integer> visited;
-
 	String possible(int n, int k, int x, int y){
-		visited = new HashSet<>();
 
 		boolean possible = bfs(n, k, x, y);
 		if (possible){
@@ -38,32 +31,49 @@ public class GCDGraph {
 	}
 
 	private boolean bfs(int n, int k, int x, int y){
-		LinkedList<Integer> fringe = new LinkedList<>();
-		fringe.add(x);
-		visited.add(x);
+		LinkedList<Integer> currentFringe = new LinkedList<>();
+		HashSet<Integer> currentVisited = new HashSet<>();
+		LinkedList<Integer> otherFringe = new LinkedList<>();
+		HashSet<Integer> otherVisited = new HashSet<>();
 
-		while (!fringe.isEmpty()){
-			Integer current = fringe.pop();
-			if (current == y){
-				return true;
+		currentFringe.add(x);
+		otherFringe.add(y);
+		currentVisited.add(x);
+		otherVisited.add(y);
+
+		LinkedList<Integer> tempFringe;
+		HashSet<Integer> tempVisited;
+
+		if (x == y){
+			return true;
+		}
+
+		while (!currentFringe.isEmpty() && !otherFringe.isEmpty()){
+			if (currentFringe.size() > otherFringe.size()){
+				// Set current to the smaller fringe to improve average runtime by balancing searches and dying early
+				// on small paths.
+				tempFringe = currentFringe;
+				tempVisited = currentVisited;
+				currentFringe = otherFringe;
+				currentVisited = otherVisited;
+				otherFringe = tempFringe;
+				otherVisited = tempVisited;
 			}
 
-			for (Integer neighbor: getNeighbors(current, n, k)) {
-				fringe.add(neighbor);
-				visited.add(neighbor);
-				if (visited.size() % 100 == 0){
-					System.out.println("Visited: " + visited.size());
-				}
+			Integer current = currentFringe.pop();
 
-				if (fringe.size() % 100 == 0){
-					System.out.println("Fringe: " + fringe.size());
+			for (Integer neighbor: getNeighbors(current, n, k, currentVisited)) {
+				if (otherVisited.contains(neighbor)){
+					return true;
 				}
+				currentFringe.add(neighbor);
+				currentVisited.add(neighbor);
 			}
 		}
 		return false;
 	}
 
-	private List<Integer> getNeighbors(int x, int n, int k){
+	private List<Integer> getNeighbors(int x, int n, int k, HashSet<Integer> visited){
 		List<Integer> neighbors = new ArrayList<>();
 		for (int i = k+1; i <= n; i++){
 			if (visited.contains(i) || i == x){
