@@ -13,13 +13,9 @@ public class GCDGraph {
 	public static final String POSSIBLE = "Possible";
 	public static final String IMPOSSIBLE = "Impossible";
 
-	private Map<Integer, Map<Integer, Integer>> factorCache;
-	private Map<List<Integer>, Integer> gcdCache;
 	private Set<Integer> visited;
 
 	String possible(int n, int k, int x, int y){
-		factorCache = new HashMap<>();
-		gcdCache = new HashMap<>();
 		visited = new HashSet<>();
 
 		boolean possible = bfs(n, k, x, y);
@@ -31,54 +27,14 @@ public class GCDGraph {
 	}
 
 	private Integer gcd(int a, int b){
-		List<Integer> items = new ArrayList<>();
-		items.add(a);
-		items.add(b);
-		Collections.sort(items);
-		if (gcdCache.containsKey(items)){
-			return gcdCache.get(items);
+		if (a < b){
+			int c = a;
+			a = b;
+			b = c;
 		}
 
-		Map<Integer, Integer> factorsA = primeFactors(a);
-		Map<Integer, Integer> factorsB = primeFactors(b);
-
-		int gcd = 1;
-		for (Integer key: factorsA.keySet()){
-			int count = Math.min(factorsA.get(key), factorsB.getOrDefault(key, 0));
-			for (int i = 0; i < count; i++){
-				gcd = gcd * key;
-			}
-		}
-		return gcd;
-	}
-
-	private Map<Integer, Integer> primeFactors(int a){
-		if (factorCache.containsKey(a)){
-			return factorCache.get(a);
-		}
-		Map<Integer, Integer> factors = new HashMap<>();
-		if (a < 4){
-			return factors;
-		}
-		for (int i = 2; i*i <= a; i++){
-			while (a % i == 0){
-				if (!factors.containsKey(i)){
-					factors.put(i, 1);
-				} else {
-					factors.put(i, factors.get(i) + 1);
-				}
-				a = a/i;
-			}
-		}
-		if (a > 1){
-			if (!factors.containsKey(a)){
-				factors.put(a, 1);
-			} else {
-				factors.put(a, factors.get(a) + 1);
-			}
-		}
-		factorCache.put(a, factors);
-		return factors;
+		if (b == 0) return a;
+		return gcd(b, a%b);
 	}
 
 	private boolean bfs(int n, int k, int x, int y){
@@ -96,7 +52,11 @@ public class GCDGraph {
 				fringe.add(neighbor);
 				visited.add(neighbor);
 				if (visited.size() % 100 == 0){
-					System.out.println(visited.size());
+					System.out.println("Visited: " + visited.size());
+				}
+
+				if (fringe.size() % 100 == 0){
+					System.out.println("Fringe: " + fringe.size());
 				}
 			}
 		}
