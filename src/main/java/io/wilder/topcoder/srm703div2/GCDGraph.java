@@ -13,12 +13,14 @@ public class GCDGraph {
 	public static final String POSSIBLE = "Possible";
 	public static final String IMPOSSIBLE = "Impossible";
 
-	private static Map<Integer, Map<Integer, Integer>> factorCache;
-	private static Map<List<Integer>, Integer> gcdCache;
+	private Map<Integer, Map<Integer, Integer>> factorCache;
+	private Map<List<Integer>, Integer> gcdCache;
+	private Set<Integer> visited;
 
 	String possible(int n, int k, int x, int y){
 		factorCache = new HashMap<>();
 		gcdCache = new HashMap<>();
+		visited = new HashSet<>();
 
 		boolean possible = bfs(n, k, x, y);
 		if (possible){
@@ -80,7 +82,6 @@ public class GCDGraph {
 	}
 
 	private boolean bfs(int n, int k, int x, int y){
-		Set<Integer> visited = new HashSet<>();
 		LinkedList<Integer> fringe = new LinkedList<>();
 		fringe.add(x);
 		visited.add(x);
@@ -92,9 +93,10 @@ public class GCDGraph {
 			}
 
 			for (Integer neighbor: getNeighbors(current, n, k)) {
-				if (!visited.contains(neighbor)){
-					fringe.add(neighbor);
-					visited.add(neighbor);
+				fringe.add(neighbor);
+				visited.add(neighbor);
+				if (visited.size() % 100 == 0){
+					System.out.println(visited.size());
 				}
 			}
 		}
@@ -104,6 +106,9 @@ public class GCDGraph {
 	private List<Integer> getNeighbors(int x, int n, int k){
 		List<Integer> neighbors = new ArrayList<>();
 		for (int i = k+1; i <= n; i++){
+			if (visited.contains(i) || i == x){
+				continue;
+			}
 			int gcd = gcd(x, i);
 			if (gcd > k){
 				neighbors.add(i);
